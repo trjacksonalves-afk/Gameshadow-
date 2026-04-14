@@ -1,3 +1,4 @@
+cat <<EOF > .github/workflows/build.yml
 name: Build Android APK
 on: [push]
 jobs:
@@ -18,12 +19,17 @@ jobs:
       - name: Build with Gradle
         run: |
           npm install
-          npx cap sync Android
-          cd Android
+          # Força a instalação da plataforma e sincroniza
+          npx cap add android || true
+          npx cap sync android
+          # Verifica se a pasta existe antes de entrar
+          ls -d android
+          cd android
           chmod +x gradlew
           ./gradlew assembleDebug
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: game-shadow-apk
-          path: Android/app/build/outputs/apk/debug/app-debug.apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+EOF
