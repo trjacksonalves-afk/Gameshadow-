@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>GameShadow</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="launcher-container">
+        <nav class="sidebar">
+            <div class="logo">🎮</div>
+            <ul class="nav-links">
+                <li onclick="trocarAba('jogos')">Biblioteca</li>
+                <li onclick="trocarAba('loja')">Steam</li>
+            </ul>
+        </nav>
+        <main id="content">
+            <div id="jogos" class="aba ativa">
+                <h2>Meus Jogos</h2>
+                <button onclick="document.getElementById('filePicker').click()">+ Adicionar .exe</button>
+                <input type="file" id="filePicker" style="display:none" onchange="addEXE(event)">
+                <div id="lista" class="grid"></div>
+            </div>
+            <div id="loja" class="aba"><h2>Steam Store</h2><div id="grid-loja"></div></div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

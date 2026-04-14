@@ -1,0 +1,81 @@
+/* RESET E BASE */
+* { box-sizing: border-box; outline: none; }
+body { 
+    margin: 0; 
+    font-family: 'Segoe UI', Tahoma, sans-serif; 
+    background: #0f0f12; 
+    color: white; 
+    width: 100vw; 
+    height: 100vh; 
+    overflow: hidden; 
+}
+
+/* CONTAINER PRINCIPAL */
+.launcher-container { display: flex; height: 100%; }
+
+/* SIDEBAR LATERAL (ESTILO STEAM) */
+.sidebar {
+    width: 100px;
+    background: #16161a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+    border-right: 1px solid #2a2a30;
+    z-index: 10;
+}
+
+.nav-links { list-style: none; padding: 0; margin-top: 20px; }
+.nav-links li { 
+    padding: 15px; 
+    cursor: pointer; 
+    text-align: center; 
+    font-size: 12px;
+}
+.nav-links li:hover { color: #00d2ff; }
+
+/* ÁREA DE CONTEÚDO */
+main {
+    flex-grow: 1;
+    padding: 30px;
+    overflow-y: auto;
+}
+
+.aba { display: none; }
+.aba.ativa { display: block; }
+
+/* GRID DE JOGOS (PERFORMANCE OTIMIZADA) */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: #1b2838;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    border: 2px solid transparent;
+    transition: transform 0.2s;
+    /* Otimização GPU */
+    will-change: transform;
+    transform: translateZ(0);
+}
+
+.card:hover {
+    background: #2a475e;
+    border-color: #00d2ff;
+    transform: scale(1.05);
+}
+
+/* BOTÃO IMPORTAR */
+.btn-importar {
+    background: #5c7e10;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
