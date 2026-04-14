@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         extrairComponentes();
     }
 
-        public void extrairComponentes() {
+            public void extrairComponentes() {
         String[] pastas = {"box64", "dxvk", "turnip", "wined3d", "vkd3d"};
         String caminhoInterno = getFilesDir().getAbsolutePath() + "/usr/components";
 
@@ -38,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
                             int ler;
                             while ((ler = in.read(buffer)) != -1) out.write(buffer, 0, ler);
                             in.close(); out.close();
+                            // Dá permissão para os instaladores .msi
+                            destino.setExecutable(true, false);
                         }
                     }
                 }
@@ -51,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
                 if (arquivos == null) continue;
                 File dirDestino = new File(caminhoInterno + "/" + pasta);
                 if (!dirDestino.exists()) dirDestino.mkdirs();
+
                 for (String nome : arquivos) {
                     File destino = new File(dirDestino, nome);
                     if (!destino.exists()) {
@@ -59,7 +62,13 @@ public class MainActivity extends AppCompatActivity {
                         byte[] buffer = new byte[1024];
                         int ler;
                         while ((ler = in.read(buffer)) != -1) out.write(buffer, 0, ler);
-                        in.close(); out.close();
+                        in.close(); 
+                        out.close();
+
+                        // --- O COMANDO VAI AQUI ---
+                        // Isso transforma o arquivo extraído em um programa executável
+                        destino.setExecutable(true, false);
+                        // --------------------------
                     }
                 }
             } catch (IOException e) { android.util.Log.e("GameShadow", "Erro pasta", e); }
