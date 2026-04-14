@@ -20,36 +20,49 @@ public class MainActivity extends AppCompatActivity {
         extrairComponentes();
     }
 
-    public void extrairComponentes() {
+        public void extrairComponentes() {
         String[] pastas = {"box64", "dxvk", "turnip", "wined3d", "vkd3d"};
         String caminhoInterno = getFilesDir().getAbsolutePath() + "/usr/components";
 
+        // 1. Extrair os arquivos .msi da raiz
+        try {
+            String[] arquivosRaiz = getAssets().list("components");
+            if (arquivosRaiz != null) {
+                for (String nomeArquivo : arquivosRaiz) {
+                    if (nomeArquivo.endsWith(".msi")) {
+                        File destino = new File(caminhoInterno + "/" + nomeArquivo);
+                        if (!destino.exists()) {
+                            InputStream in = getAssets().open("components/" + nomeArquivo);
+                            OutputStream out = new FileOutputStream(destino);
+                            byte[] buffer = new byte[1024];
+                            int ler;
+                            while ((ler = in.read(buffer)) != -1) out.write(buffer, 0, ler);
+                            in.close(); out.close();
+                        }
+                    }
+                }
+            }
+        } catch (IOException e) { android.util.Log.e("GameShadow", "Erro MSI", e); }
+
+        // 2. Extrair as pastas dos componentes
         for (String pasta : pastas) {
             try {
                 String[] arquivos = getAssets().list("components/" + pasta);
                 if (arquivos == null) continue;
-
-                File diretorioDestino = new File(caminhoInterno + "/" + pasta);
-                if (!diretorioDestino.exists()) diretorioDestino.mkdirs();
-
-                for (String nomeArquivo : arquivos) {
-                    File arquivoDestino = new File(diretorioDestino, nomeArquivo);
-                    if (!arquivoDestino.exists()) {
-                        InputStream in = getAssets().open("components/" + pasta + "/" + nomeArquivo);
-                        OutputStream out = new FileOutputStream(arquivoDestino);
+                File dirDestino = new File(caminhoInterno + "/" + pasta);
+                if (!dirDestino.exists()) dirDestino.mkdirs();
+                for (String nome : arquivos) {
+                    File destino = new File(dirDestino, nome);
+                    if (!destino.exists()) {
+                        InputStream in = getAssets().open("components/" + pasta + "/" + nome);
+                        OutputStream out = new FileOutputStream(destino);
                         byte[] buffer = new byte[1024];
                         int ler;
-                        while ((ler = in.read(buffer)) != -1) {
-                            out.write(buffer, 0, ler);
-                        }
-                        in.close();
-                        out.close();
+                        while ((ler = in.read(buffer)) != -1) out.write(buffer, 0, ler);
+                        in.close(); out.close();
                     }
                 }
-            } catch (IOException e) {
-                android.util.Log.e("Gameshadow", "Erro ao extrair: " + pasta, e);
-            }
+            } catch (IOException e) { android.util.Log.e("GameShadow", "Erro pasta", e); }
         }
     }
-}
 
